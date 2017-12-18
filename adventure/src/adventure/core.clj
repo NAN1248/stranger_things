@@ -11,7 +11,7 @@
     save him before it's too late! "
               :title "in your basement"
               :dir {:south :mirkwood, :upstairs :bedroom}
-              :contents #{:potato}}
+              :contents #{:potato, :book}}
    :mirkwood {:desc "Mirkwood is a road that runs past the nearby forest. You see Will's bike lying on the side of the
 road, abandoned. "
               :title "on Mirkwood"
@@ -59,15 +59,13 @@ you find Steve Harrington fixing his hair. "
           player)
       (assoc-in player [:location] dest))))
 
-    ;  (defn pick [object player]
-    ;    (let [location (player :location)]
-    ;     (if (nil? the-map location :contents)
-    ;       (do (println "No objects to pick up. ")
-    ;         player
-    ;       (update-in player [:inventory] #(conj % object))
-    ;       (do (println "you have picked up an object"))))))
 
-(defn pickup )
+(defn pickup [contents player]
+  (let [location (player :location)
+              item (->> the-map location :contents contents)]
+    (if (nil? item)
+      (do (println "You can't pick that up.") player)
+      (update-in player [:inventory] #(conj % item)))))
 
 
 (defn tock [player]
@@ -82,7 +80,8 @@ you find Steve Harrington fixing his hair. "
          [:west] (go :west player)
          [:upstairs] (go :upstairs player)
          [:downstairs] (go :downstairs player)
-         [:pickup] (pickup :pickup player)
+         [:pickup_potato] (pickup :potato player)
+         [:pickup_book] (pickup :book player)
 
          _ (do (println "I don't understand you.")
                player)))
