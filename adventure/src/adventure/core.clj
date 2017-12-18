@@ -28,7 +28,7 @@ you hear in the bushes... You've found Eleven!"
               :title "in the forest"
               :dir {:west :mirkwood, :south :store, :east :cliff}
               :people #{:eleven}
-              :help "Type 'friend_eleven' to add eleven to your party. \nType 'west' to go to Mirkwood."
+              :help "Type 'friend eleven' to add eleven to your party. \nType 'west' to go to Mirkwood."
               :contents #{}}
    :house {:desc "The Byer's House is dark and empty. You hear sounds coming from Will's room. The lights start to flicker, and you
 recognize the song 'Should I Stay or Should I Go'..."
@@ -127,9 +127,9 @@ you find Steve Harrington fixing his hair. "
          [:west] (go :west player)
          [:upstairs] (go :upstairs player)
          [:downstairs] (go :downstairs player)
-         ;[:pickup_potato] (pickup :potato player)
-         ;[:pickup_book] (pickup :book player)
-         [:friend_eleven] (addparty :eleven player)
+         ;[:pickup :potato] (pickup :potato player)
+         ;[:pickup :book] (pickup :book player)
+         [:friend :eleven] (addparty :Eleven player)
          [:status] (up player)
          [:help] (help player)
 
