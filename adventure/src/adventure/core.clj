@@ -7,26 +7,30 @@
 (def the-map
   {
    :basement {:desc "Welcome to the small town of Hawkins! You are Mike Wheeler and your friends are Dustin, Lucas, and Will.
-    Dustin and Lucas are currently in your party, but Will has been captured by the demegorgan. You must
-    save him before it's too late! "
+Dustin and Lucas are currently in your party, but Will has been captured by the demegorgan. You must
+save him before it's too late!"
               :title "in your basement"
               :dir {:south :mirkwood, :upstairs :bedroom}
               :people #{}
+              :help "Type 'south' to go to Mirkwood. \nType 'upstairs' to go to Nancy's bedroom."
               :contents #{}}
    :mirkwood {:desc "Mirkwood is a road that runs past the nearby forest. You see Will's bike lying on the side of the
-road, abandoned. "
+road, abandoned."
               :title "on Mirkwood"
               :dir {:north :basement, :east :forest, :west :house}
               :people #{}
+              :help "Type 'north' to go back to your basement. \nType 'east' to go to the forest. \nType 'west' to go to the Byer's House.
+Type pickup_bike to grab Will's bike."
               :contents #{:bike}}
    :forest {:desc "The forest is a dangerous place at night. You, Dustin, and Lucas travel through the forest in
-   hopes of finding Will. It begins to storm and Lucas is getting nervous. You turn your flashlight towards a noise
-   you hear in the bushes... You've found Eleven! "
+hopes of finding Will. It begins to storm and Lucas is getting nervous. You turn your flashlight towards a noise
+you hear in the bushes... You've found Eleven!"
               :title "in the forest"
               :dir {:west :mirkwood}
               :people #{:eleven}
               :contents #{}}
-   :house {:desc "The Byer's House is dark and empty."
+   :house {:desc "The Byer's House is dark and empty. You hear sounds coming from Will's room. The lights start to flicker, and you
+recognize the song 'Should I Stay or Should I Go'..."
               :title "in the Byer's House"
               :dir {:east :mirkwood}
               :people #{}
@@ -53,7 +57,7 @@ you find Steve Harrington fixing his hair. "
       (print (-> the-map location :desc)))
     (update-in player [:seen] #(conj % location))))
 
-(defn update [player]
+(defn up [player]
   (let [location (player :location)]
     (println (str "You are " (-> the-map location :title) ". "))
     (println (str "In your bag: " (player :inventory) " "))
@@ -89,6 +93,9 @@ you find Steve Harrington fixing his hair. "
       (do (println "There's no one here.") player)
       (update-in player [:party] #(conj % person)))))
 
+(defn help [player]
+  (let [location (player :location)]
+    (do (println (str (-> the-map location :help))) player)))
 
 
 (defn tock [player]
@@ -106,7 +113,8 @@ you find Steve Harrington fixing his hair. "
          ;[:pickup_potato] (pickup :potato player)
          ;[:pickup_book] (pickup :book player)
          [:friend_eleven] (addparty :eleven player)
-         [:status] (update player)
+         [:status] (up player)
+         [:help] (help player)
 
          _ (do (println "I don't understand you.")
                player)))
@@ -117,6 +125,6 @@ you find Steve Harrington fixing his hair. "
   (loop [local-map the-map
          local-player adventurer]
     (let [pl (status local-player)
-          _  (println "What do you want to do?")
+          _  (println " What do you want to do?")
           command (read-line)]
       (recur local-map (respond pl (to-keywords command))))))
