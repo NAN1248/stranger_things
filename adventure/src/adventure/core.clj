@@ -3,31 +3,47 @@
             [clojure.string :as str])
   (:gen-class))
 
+
 (def the-map
-  {:foyer {:desc "The walls are freshly painted but do not have any pictures.  You get the feeling it was just created
-for a game or something."
-           :title "in the foyer"
-           :dir {:south :grue-pen, :east :house}
-           :contents #{:raw-egg}}
-   :grue-pen {:desc "It is very dark.  You are about to be eaten by a grue."
-              :title "in the grue pen"
-              :dir {:north :foyer}
+  {
+   :basement {:desc "Welcome to the small town of Hawkins! You are Mike Wheeler and your friends are Dustin, Lucas, and Will.
+    Dustin and Lucas are currently in your party, but Will has been captured by the demegorgan. You must
+    save him before it's too late! "
+              :title "in your basement"
+              :dir {:south :mirkwood, :upstairs :bedroom}
+              :contents #{:potato}}
+   :mirkwood {:desc "Mirkwood is a road that runs past the nearby forest. You see Will's bike lying on the side of the
+road, abandoned. "
+              :title "on Mirkwood"
+              :dir {:north :basement, :east :forest, :west :house}
               :contents #{}}
-   :house {:desc "You have now exited the house"
-              :title "in the house"
-              :dir {:west :foyer}
+   :forest {:desc "The forest is a dangerous place at night. You, Dustin, and Lucas travel through the forest in
+   hopes of finding Will. It begins to storm and Lucas is getting nervous. You turn your flashlight towards a noise
+   you hear in the bushes... You've found Eleven! "
+              :title "in the forest"
+              :dir {:west :mirkwood}
               :contents #{}}
-   })
+   :house {:desc "The Byer's House is gloomy without Will there."
+              :title "in the Byer's House"
+              :dir {:east :mirkwood}
+              :contents #{}}
+   :bedroom {:desc "The room is covered in striped wallpaper and pictures of Nancy's friends. On top of Nancy's bed
+you find Steve Harrington fixing his hair. "
+              :title "in Nancy's Bedroom"
+              :dir {:downstairs :basement, :south :mirkwood}
+              :contents #{}}})
+
 
 (def adventurer
-  {:location :foyer
+  {:location :basement
    :inventory #{}
    :tick 0
    :seen #{}})
 
 (defn status [player]
   (let [location (player :location)]
-    (print (str "You are " (-> the-map location :title) ". "))
+    (println (str "You are " (-> the-map location :title) ". "))
+    (println (str "In your bag: " (player :inventory) " --> "))
     (when-not ((player :seen) location)
       (print (-> the-map location :desc)))
     (update-in player [:seen] #(conj % location))))
@@ -43,7 +59,15 @@ for a game or something."
           player)
       (assoc-in player [:location] dest))))
 
-; (defn pick [command]
+    ;  (defn pick [object player]
+    ;    (let [location (player :location)]
+    ;     (if (nil? the-map location :contents)
+    ;       (do (println "No objects to pick up. ")
+    ;         player
+    ;       (update-in player [:inventory] #(conj % object))
+    ;       (do (println "you have picked up an object"))))))
+
+(defn pickup )
 
 
 (defn tock [player]
@@ -56,11 +80,12 @@ for a game or something."
          [:south] (go :south player)
          [:east] (go :east player)
          [:west] (go :west player)
-         
-         _ (do (println "I don't understand you.")
-               player)
+         [:upstairs] (go :upstairs player)
+         [:downstairs] (go :downstairs player)
+         [:pickup] (pickup :pickup player)
 
-         )) 
+         _ (do (println "I don't understand you.")
+               player)))
 
 (defn -main
   "I don't do a whole lot ... yet."
