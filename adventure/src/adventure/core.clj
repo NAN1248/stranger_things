@@ -55,11 +55,14 @@ Type 'fight' to try to defeat the demegorgan.\nType 'leave' to flee Will's house
               :contents #{:bat}
 
     ; ASSUME WE HAVE ELEVEN. DO NOT LET THEM HERE IF THEY DO NOT
-   :store {:desc ""
+   :store {:desc "Eleven breaks the glass in the double doors with her mind and you step inside! Eleven complains that
+she is hungry after escaping the D.O.E. Perhaps you should get her some food..."
               :title "The grocery store"
               :dir {:north :forest}
               :people #{}
-              :help "Type 'north' to go to forest."
+              :help "Type 'north' to go to the forest.
+Type 'grab eggo' or 'grab pizza' to grab either the eggo waffles or the frozen pizza from the freezer isle.
+Type 'eat eggo' or 'eat pizza' to have Eleven fuel up on some food :)"
               :contents #{:eggo_waffles, :frozen_pizza}}
 
    :cliff {:desc "You take a good look at the beatiful waterfall, and you realize this is one of the best views you have seen in your life. \n
@@ -67,7 +70,7 @@ Type 'fight' to try to defeat the demegorgan.\nType 'leave' to flee Will's house
               :title "The Cliff"
               :dir {:west :forest}
               :people #{}
-              :help "Type 'west' to go to forest.\n Type 'pickup_key' to pickup the key. \nType 'jump' to jump off the cliff"
+              :help "Type 'west' to go to the forest.\n Type 'pickup key' to pickup the key. \nType 'jump' to jump off the cliff"
               :contents #{:key}}
 
    :bedroom {:desc "The room is covered in striped wallpaper and pictures of Nancy's friends. On top of Nancy's bed
@@ -77,14 +80,6 @@ you find Steve Harrington fixing his hair. "
               :people #{}
               :help "Type 'downstairs' to go to basement. \nType 'south' to go to Mirkwood."
               :contents #{}}})
-
-(def adventurer
-  {:location :basement
-   :inventory #{}
-   :party #{:Dustin, :Lucas}
-   :tick 0
-   :health 100
-   :seen #{}})
 
 (defn status [player]
   (let [location (player :location)]
@@ -110,10 +105,16 @@ you find Steve Harrington fixing his hair. "
 (defn go [dir player]
   (let [location (player :location)
         dest (->> the-map location :dir dir)]
-    (if (nil? dest)
-      (do (println "You can't go that way.")
-          player)
-      (assoc-in player [:location] dest))))
+
+    (if (and (= dest :store) (not (contains? (player :party) :eleven)))
+        (do (println "Hmmm... The grocery store seems to be closed. Maybe if you had some help from a certain
+super-powered friend you would be able to break in?") player)
+        (if (and (= location :store) (not (player :eaten)))
+          (do (println "Eleven is really hungry! She won't let you leave until you feed her.") player)
+          (if (nil? dest)
+            (do (println "You can't go that way.")
+                player)
+            (assoc-in player [:location] dest))))))
 
 
 (defn pickup [contents player]
@@ -130,6 +131,16 @@ you find Steve Harrington fixing his hair. "
       (do (println "There's no one here.") player)
       (update-in player [:party] #(conj % person)))))
 
+(defn eat [food player]
+  (if (and (contains? (player :inventory) :eggo_waffles) (= food :eggo_waffles))
+      (do (println "'Yum' -eleven") player)
+      (if (and (contains? (player :inventory) :frozen_pizza) (= food :frozen_pizza))
+          (do (println "Uh-oh it looks like eleven doesn't like frozen pizza very much...") player)
+          (do (println "Hmmm it doesn't look like you've grabbed any food for her yet.") player)))
+
+  (if (and (contains? (player :inventory) :eggo_waffles) (= food :eggo_waffles))
+    (assoc-in player [:eaten] true)))
+
 (defn help [player]
   (let [location (player :location)]
     (do (println (str (-> the-map location :help))) player)))
@@ -145,26 +156,44 @@ the wall and bites your head off... and you die.") player))
 (defn tock [player]
   (update-in player [:tick] inc))
 
+(def adventurer
+  {:location :basement
+   :inventory #{}
+   :party #{:Dustin, :Lucas}
+   :tick 0
+   :health 100
+   :eaten false
+   :seen #{}})
+
 (defn respond [player command]
   (match command
          [:look] (update-in player [:seen] #(disj % (-> player :location)))
-         (:or [:n] [:north] ) (go :north player)
+         ;directional movements
+         [:north]  (go :north player)
          [:south] (go :south player)
          [:east] (go :east player)
          [:west] (go :west player)
          [:upstairs] (go :upstairs player)
          [:downstairs] (go :downstairs player)
-         ;[:pickup :potato] (pickup :potato player)
-         ;[:pickup :book] (pickup :book player)
+         [:leave] (go :leave player)
+         [:stay] (go :stay player)
+         ;picking up objects and adding them to the player's inventory
          [:pickup :bike] (pickup :bike player)
          [:pickup :bat] (pickup :bat player)
-         [:friend :eleven] (addparty :Eleven player)
+         [:pickup :key] (pickup :key player)
+         [:grab :eggo] (pickup :eggo_waffles player)
+         [:grab :pizza] (pickup :frozen_pizza player)
+         ;adding people found in the game to your current party
+         [:friend :eleven] (addparty :eleven player)
+         ;eating functionality given to eleven
+         [:eat :pizza] (eat :frozen_pizza player)
+         [:eat :eggo] (eat :eggo_waffles player)
+         ;commands that give the player information or whole game commands
          [:status] (up player)
          [:help] (help player)
-         [:leave] (go :leave player)
-         [:fight] (fight player)
-         [:stay] (go :stay player)
          [:quit] (update-in player [:health] #(- % 100))
+         ;battle commands
+         [:fight] (fight player)
 
          _ (do (println "I don't understand you.")
                player)))
@@ -174,7 +203,7 @@ the wall and bites your head off... and you die.") player))
   [& args]
   (loop [local-map the-map
          local-player adventurer]
-   (when (> (local-player :health) 0)
+   (when (> (local-player :health) 0) ;exit game when u die
     (let [pl (status local-player)
           _  (println " What do you want to do?")
           command (read-line)]
