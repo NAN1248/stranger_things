@@ -31,7 +31,7 @@ you hear in the bushes... You've found Eleven!"
               :title "in the forest"
               :dir {:west :mirkwood, :south :store, :east :cliff}
               :people #{:eleven}
-              :help "Type 'friend eleven' to add eleven to your party. \nType 'west' to go to Mirkwood.
+              :help "Type 'friend eleven' to add Eleven to your party. \nType 'west' to go to Mirkwood.
 Type 'south' to go to the local Hawkins' grocery store.\nType 'east' to head towards the cliff overlooking the lake."
               :contents #{}}
 
@@ -54,10 +54,9 @@ Be careful... you might not be prepared for an unexpected battle...\n
 Type 'fight' to try to defeat the demegorgan.\nType 'leave' to flee Will's house."}
               :contents #{:bat}
 
-    ; ASSUME WE HAVE ELEVEN. DO NOT LET THEM HERE IF THEY DO NOT
    :store {:desc "Eleven breaks the glass in the double doors with her mind and you step inside! Eleven complains that
 she is hungry after escaping the D.O.E. Perhaps you should get her some food..."
-              :title "The grocery store"
+              :title "at the grocery store"
               :dir {:north :forest}
               :people #{}
               :help "Type 'north' to go to the forest.
@@ -65,20 +64,30 @@ Type 'grab eggo' or 'grab pizza' to grab either the eggo waffles or the frozen p
 Type 'eat eggo' or 'eat pizza' to have Eleven fuel up on some food :)"
               :contents #{:eggo_waffles, :frozen_pizza}}
 
-   :cliff {:desc "You take a good look at the beatiful waterfall, and you realize this is one of the best views you have seen in your life. \n
-                  Then you realize there is a massive cliff. You need to see if you can trust Eleven, so you must test her strength."
-              :title "The Cliff"
+   :cliff {:desc "You look around at how beautiful it is here on the edge of the cliff overlooking the lake. Over
+the edge of the cliff you see what seems to be a silver key sitting on a ledge a few feet below you... Oh no!
+You don't know how, but the bullies from school have found you here! They start to run towards you..."
+              :title "at the Cliff"
+              :dir {:west :forest, :jump :jumped}
+              :people #{}
+              :help "Type 'west' to go to the forest.\nType 'jump' to jump off the edge of the cliff."
+              :contents #{}}
+
+   :jumped {:desc "You jumped off the cliff! But Eleven used her mind powers to prevent you from falling to your
+death! She has you suspended in the air, in arms reach of the key you saw earlier..."
+              :title "at the Cliff"
               :dir {:west :forest}
               :people #{}
-              :help "Type 'west' to go to the forest.\n Type 'pickup key' to pickup the key. \nType 'jump' to jump off the cliff"
+              :help "Type 'west' to go to the forest.\nType 'grab key' to grab the key from the cliff's ledge."
               :contents #{:key}}
 
    :bedroom {:desc "The room is covered in striped wallpaper and pictures of Nancy's friends. On top of Nancy's bed
 you find Steve Harrington fixing his hair. "
               :title "in Nancy's Bedroom"
               :dir {:downstairs :basement, :south :mirkwood}
-              :people #{}
-              :help "Type 'downstairs' to go to basement. \nType 'south' to go to Mirkwood."
+              :people #{:steve}
+              :help "Type 'downstairs' to go to basement. \nType 'south' to go to Mirkwood.
+Type 'friend steve' to add Steve to your party."
               :contents #{}}})
 
 (defn status [player]
@@ -153,6 +162,14 @@ the wall and bites your head off... and you die.") player))
     (if (= location :stayhouse)
       (update-in player [:health] #(- % 100)))))
 
+(defn jump [dir player]
+       (if (contains? (player :party) :eleven)
+         (go :jump player)
+         (println "Ahhhhhhhhhh.... *splash*... So it seems you forgot to add someone to your party who could have used
+     some supernatural forces to prevent you from falling to your death. You died."))
+       (if (not (contains? (player :party) :eleven))
+         (update-in player [:health] #(- % 100))))
+
 (defn tock [player]
   (update-in player [:tick] inc))
 
@@ -183,8 +200,10 @@ the wall and bites your head off... and you die.") player))
          [:pickup :key] (pickup :key player)
          [:grab :eggo] (pickup :eggo_waffles player)
          [:grab :pizza] (pickup :frozen_pizza player)
+         [:grab :key] (pickup :key player)
          ;adding people found in the game to your current party
          [:friend :eleven] (addparty :eleven player)
+         [:friend :steve] (addparty :steve player)
          ;eating functionality given to eleven
          [:eat :pizza] (eat :frozen_pizza player)
          [:eat :eggo] (eat :eggo_waffles player)
@@ -194,6 +213,7 @@ the wall and bites your head off... and you die.") player))
          [:quit] (update-in player [:health] #(- % 100))
          ;battle commands
          [:fight] (fight player)
+         [:jump] (jump :jump player)
 
          _ (do (println "I don't understand you.")
                player)))
