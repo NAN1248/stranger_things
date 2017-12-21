@@ -1,8 +1,12 @@
 (ns adventure.core
   (:require [clojure.core.match :refer [match]]
-            [clojure.string :as str])
+            [clojure.string :as str]
+						[clj-audio.core :as audio])
   (:gen-class))
 
+(use 'clj-audio.core)
+
+(audio/loop-clip (clip (->stream "./stmt.wav")))
 
 (def the-map
   {
