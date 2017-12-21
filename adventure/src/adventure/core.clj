@@ -6,89 +6,145 @@
 
 (def the-map
   {
-   :basement {:desc "Welcome to the small town of Hawkins! You are Mike Wheeler and your friends are Dustin, Lucas, and Will.
-Dustin and Lucas are currently in your party, but Will has been captured by the demegorgan. You must
-save him before it's too late! Type 'help' to see what you are able to do while you explore Hawkins. You can quit the game at
-any time by typing 'quit'."
-              :title "in your basement"
-              :dir {:south :mirkwood, :upstairs :bedroom}
-              :people #{}
-              :help "Type 'south' to go to Mirkwood. \nType 'upstairs' to go to Nancy's bedroom."
-              :contents #{}}
+  :basement {:desc "Welcome to the small town of Hawkins! You are Mike Wheeler and your friends are Dustin, Lucas, and Will.
+                    Dustin and Lucas are currently in your party, but Will has been captured by the demogorgan. You must
+                    save him before it's too late! Type 'help' to see what you are able to do while you explore Hawkins. You can quit the game at
+                    any time by typing 'quit'."
+            :title "in your basement"
+            :dir {:south :mirkwood, :upstairs :bedroom}
+            :people #{}
+            :help "Type 'south' to go to Mirkwood. \nType 'upstairs' to go to Nancy's bedroom."
+            :contents #{}}
 
-   :mirkwood {:desc "Mirkwood is a road that runs past the nearby forest. You see Will's bike lying on the side of the
-road, abandoned."
-              :title "on Mirkwood"
-              :dir {:north :basement, :east :forest, :west :house}
-              :people #{}
-              :help "Type 'north' to go back to your basement. \nType 'east' to go to the forest. \nType 'west' to go to the Byer's House.
-Type 'pickup bike' to grab Will's bike."
-              :contents #{:bike}}
+  :mirkwood {:desc "Mirkwood is a road that runs past the nearby forest. You see Will's bike lying on the side of the
+                    road, abandoned."
+            :title "on Mirkwood"
+            :dir {:north :basement, :east :forest, :west :house}
+            :people #{}
+            :help "Type 'north' to go back to your basement. \nType 'east' to go to the forest. \nType 'west' to go to the Byer's House.
+                    Type 'pickup bike' to grab Will's bike."
+            :contents #{:bike}}
 
-   :forest {:desc "The forest is a dangerous place at night. You, Dustin, and Lucas travel through the forest in
-hopes of finding Will. It begins to storm and Lucas is getting nervous. You turn your flashlight towards a noise
-you hear in the bushes... You've found Eleven!"
-              :title "in the forest"
-              :dir {:west :mirkwood, :south :store, :east :cliff}
-              :people #{:eleven}
-              :help "Type 'friend eleven' to add Eleven to your party. \nType 'west' to go to Mirkwood.
-Type 'south' to go to the local Hawkins' grocery store.\nType 'east' to head towards the cliff overlooking the lake."
-              :contents #{}}
+  :forest {:desc "The forest is a dangerous place at night. You, Dustin, and Lucas travel through the forest in
+                  hopes of finding Will. It begins to storm and Lucas is getting nervous. You turn your flashlight towards a noise
+                  you hear in the bushes... You've found Eleven!"
+            :title "in the forest"
+            :dir {:west :mirkwood, :south :store, :east :cliff}
+            :people #{:eleven}
+            :help "Type 'friend eleven' to add Eleven to your party. \nType 'west' to go to Mirkwood.
+                    Type 'south' to go to the local Hawkins' grocery store.\nType 'east' to head towards the cliff overlooking the lake."
+            :contents #{}}
 
-   :house {:desc "The Byer's House is dark and empty. You hear sounds coming from Will's room. The lights start to flicker, and you
-recognize the song 'Should I Stay or Should I Go'..."
-              :title "in the Byer's House"
-              :dir {:leave :mirkwood, :stay :stayhouse}
-              :people #{}
-              :help "Type 'leave' to go back to Mirkwood.\nType 'stay' to investigate and risk encountering whoever is playing the music."
-              :contents #{}}
+  :house {:desc "The Byer's House is dark and empty. You hear sounds coming from Will's room. The lights start to flicker, and you
+                  recognize the song 'Should I Stay or Should I Go'..."
+            :title "in the Byer's House"
+            :dir {:leave :mirkwood, :stay :stayhouse}
+            :people #{}
+            :help "Type 'leave' to go back to Mirkwood.\nType 'stay' to investigate and risk encountering whoever is playing the music."
+            :contents #{}}
 
-   :stayhouse {:desc "You head down the hallway to check out Will's room only to look to your right and see the demegorgan
-stretching the wallpaper out in an attempt to break through the wall! At the same time a bat with nails sticking out of it
-catches your eye. "
-               :title "in the Byer's House"
-               :dir {:leave :mirkwood}
-               :people #{}
-               :help "Type 'pickup bat' to grab the weapon.\nThen you must decide to run or fight the demegorgan!
-Be careful... you might not be prepared for an unexpected battle...\n
-Type 'fight' to try to defeat the demegorgan.\nType 'leave' to flee Will's house."}
-              :contents #{:bat}
+  :stayhouse {:desc "You head down the hallway to check out Will's room only to look to your right and see the demogorgan
+                      stretching the wallpaper out in an attempt to break through the wall! At the same time a bat with nails sticking out of it
+                      catches your eye. "
+             :title "in the Byer's House"
+             :dir {:leave :mirkwood}
+             :people #{}
+             :help "Type 'pickup bat' to grab the weapon.\nThen you must decide to run or fight the demogorgan!
+                    Be careful... you might not be prepared for an unexpected battle...\n
+                    Type 'fight' to try to defeat the demogorgan.\nType 'leave' to flee Will's house."}
+            :contents #{:bat}
 
-   :store {:desc "Eleven breaks the glass in the double doors with her mind and you step inside! Eleven complains that
-she is hungry after escaping the D.O.E. Perhaps you should get her some food..."
-              :title "at the grocery store"
-              :dir {:north :forest}
-              :people #{}
-              :help "Type 'north' to go to the forest.
-Type 'grab eggo' or 'grab pizza' to grab either the eggo waffles or the frozen pizza from the freezer isle.
-Type 'eat eggo' or 'eat pizza' to have Eleven fuel up on some food :)"
-              :contents #{:eggo_waffles, :frozen_pizza}}
+  :store {:desc "Eleven breaks the glass in the double doors with her mind and you step inside! Eleven complains that
+                  she is hungry after escaping the D.O.E. Perhaps you should get her some food..."
+            :title "at the grocery store"
+            :dir {:north :forest}
+            :people #{}
+            :help "Type 'north' to go to the forest.
+                    Type 'grab eggo' or 'grab pizza' to grab either the eggo waffles or the frozen pizza from the freezer isle.
+                    Type 'eat eggo' or 'eat pizza' to have Eleven fuel up on some food :)"
+            :contents #{:eggo_waffles, :frozen_pizza}}
 
-   :cliff {:desc "You look around at how beautiful it is here on the edge of the cliff overlooking the lake. Over
-the edge of the cliff you see what seems to be a silver key sitting on a ledge a few feet below you... Oh no!
-You don't know how, but the bullies from school have found you here! They start to run towards you..."
-              :title "at the Cliff"
-              :dir {:west :forest, :jump :jumped}
-              :people #{}
-              :help "Type 'west' to go to the forest.\nType 'jump' to jump off the edge of the cliff."
-              :contents #{}}
+  :cliff {:desc "You look around at how beautiful it is here on the edge of the cliff overlooking the lake. Over
+                  the edge of the cliff you see what seems to be a silver key sitting on a ledge a few feet below you... Oh no!
+                  You don't know how, but the bullies from school have found you here! They start to run towards you..."
+            :title "at the Cliff"
+            :dir {:west :forest, :jump :jumped}
+            :people #{}
+            :help "Type 'west' to go to the forest.\nType 'jump' to jump off the edge of the cliff."
+            :contents #{}}
 
-   :jumped {:desc "You jumped off the cliff! But Eleven used her mind powers to prevent you from falling to your
-death! She has you suspended in the air, in arms reach of the key you saw earlier..."
-              :title "at the Cliff"
-              :dir {:west :forest}
-              :people #{}
-              :help "Type 'west' to go to the forest.\nType 'grab key' to grab the key from the cliff's ledge."
-              :contents #{:key}}
+  :jumped {:desc "You jumped off the cliff! But Eleven used her mind powers to prevent you from falling to your
+                  death! She has you suspended in the air, in arms reach of the key you saw earlier..."
+            :title "at the Cliff"
+            :dir {:west :forest, :north :bus}
+            :people #{}
+            :help "Type 'north' to go to the forest.\nType 'east' to go to the school bus.\nType 'grab key' to grab the key from the cliff's ledge."
+            :contents #{:key}}  
+  ;
+  ;
+  ; note: hide and fight must be implemented
+  ; fight should kill them "You dont stand a chance against the helicopter"
+  ;
+  :bus {:desc "You arrive at the abandoned school bus. In the distance you can hear a helicopter whirring. You know they want to find Elven. Will you hide or fight?"
+            :title "at the abandoned school bus"
+            :dir {:south :cliff, :west :station, :hide, :fight}
+            :people #{}
+            :help "Type 'south' to go to the cliff.\nType 'west' to go to the police station.\nType 'hide' to take evasive action.\nType 'fight' to take on the helicopter."
+            :contents #{}}
 
-   :bedroom {:desc "The room is covered in striped wallpaper and pictures of Nancy's friends. On top of Nancy's bed
-you find Steve Harrington fixing his hair. "
-              :title "in Nancy's Bedroom"
-              :dir {:downstairs :basement, :south :mirkwood}
-              :people #{:steve}
-              :help "Type 'downstairs' to go to basement. \nType 'south' to go to Mirkwood.
-Type 'friend steve' to add Steve to your party."
-              :contents #{}}})
+  :station {:desc "You arrive at the Police Station. In a chair you see a middle aged man who is complacent and curious, smoking his cigarrette and drinking a cold beer.
+                    You can tell he has seen a lot in his time, and think he can help you out on your journey to find Will. His name is Hopper, and he is the chief of this town."
+            :title "at the Police Station"
+            :dir {:east :bus, :north :school, :south :lab}
+            :people #{:hopper}
+            :help "Type 'east' to go to the bus.\nType 'north' to go the school.\nType 'south' to go to the lab."
+            :contents #{}}  
+  ;
+  ;
+  ; note: the school no longer connects to the lab
+  ;
+  ;
+  :school {:desc "You have arrived at Hawkins Middle School. This establishment is where you study everyday - specifically in the AV club room.
+                  You roam the halls looking for your AV Club teacher because you think he will have a good idea as to what to do about Will being stuck in another dimension.
+                  Down the hallway, you see him."
+            :title "at Hawkins Middle School"
+            :dir {:east :bus, :west :basement, :south :station}
+            :people #{:mr_clarke}
+            :help "Type 'east' to go to the bus.\nType 'west' to go back to your basement.\nType 'south' to go to the police station."
+            :contents #{}}
+
+  :lab {:desc "You get past the gate, and there it is: Hawkins National Labatory\n
+                Known for being associated with the 'energy department' this laboratory is suspicious and you can sense that something is near.\n
+                Almost as if you were standing on top of it...\n"
+            :title "in the Lab"
+            :dir {:downstairs :updown,:north :station}
+            :people #{}
+            :help "Type 'north' to go to the police station.\nType 'downstairs' to explore the basement"
+            :contents #{}}
+  ;
+  ;
+  ; note: have hide kill them "you were found and eaten alive"
+  ; we should only have them be able to see the go home option after the demegorgon has died
+  ;
+  :updown {:desc "The winds howl in the distance, and a chill goes down your spine. You cannot see Will, but you sense that he is here. You cry out Will's name...\n
+                  but you are met with silence.\n 
+                  Suddenly out of the ground emerges the demogorgon.\n
+                  Your options are fight or hide.\n"
+            :title "in the Upside Down"
+            :dir {:west :basement, :fight, :hide}
+            :people #{:will}
+            :help "Type 'fight' to fight the demegorgon.\nType 'hide' to attempt to hide from the demegorgon."
+            :contents #{}}
+
+
+  :bedroom {:desc "The room is covered in striped wallpaper and pictures of Nancy's friends. On top of Nancy's bed
+                    you find Steve Harrington fixing his hair. "
+            :title "in Nancy's Bedroom"
+            :dir {:downstairs :basement, :south :mirkwood}
+            :people #{:steve}
+            :help "Type 'downstairs' to go to basement. \nType 'south' to go to Mirkwood.
+                    Type 'friend steve' to add Steve to your party."
+            :contents #{}}})
 
 (defn status [player]
   (let [location (player :location)]
@@ -157,7 +213,7 @@ super-powered friend you would be able to break in?") player)
 (defn fight [player]
   (let [location (player :location)]
     (if (= location :stayhouse)
-      (do (println "You were not prepared to fight the demegorgan yet! The demegorgan frees itself from
+      (do (println "You were not prepared to fight the demogorgan yet! The demogorgan frees itself from
 the wall and bites your head off... and you die.") player))
     (if (= location :stayhouse)
       (update-in player [:health] #(- % 100)))))
