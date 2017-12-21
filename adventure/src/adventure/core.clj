@@ -134,11 +134,19 @@ Almost as if you were standing right on top of it...\n"
   ;
   :updown {:desc "The winds howl in the distance, and a chill goes down your spine. Everything is dark and covered in black vines.
 You cannot see Will, but you sense that he is here. You cry out Will's name...but you are met with silence.\n
-Suddenly out of the ground emerges the demogorgon. Your options are fight or hide.\n"
+Suddenly out of the ground emerges the demogorgon. Your options are battle or hide.\n"
             :title "in the Upside Down"
-            :dir {:west :basement, :fight, :hide}
+            :dir {:battle :updownbattle, :west :basement, :fight, :hide}
             :people #{:will}
-            :help "Type 'fight' to fight the demegorgon.\nType 'hide' to attempt to hide from the demegorgon."
+            :help "Type 'battle' to fight the demegorgon.\nType 'hide' to attempt to hide from the demegorgon."
+            :contents #{}}
+
+  :updownbattle {:desc "You have chosen to battle the demegorgan... good luck! These are the available attacks: 'swing bat' : 'throw rocks' : 'use eleven'"
+            :title "in the Upside Down"
+            :dir {}
+            :people #{:will}
+            :help "You're in the Upside Down... no one can help you anymore...
+These are the available attacks: 'swing bat' : 'throw rocks' : 'use eleven'"
             :contents #{}}
 
 
@@ -254,23 +262,6 @@ the wall and bites your head off... and you die.") player))
         (update-in player [:health] #(- % 100))
         (go :jump player)))
 
-(defn hide [player]
-  (let [location (player :location)]
-
-  (if (= location :updown)
-    (println "You've attempted to hide from the demagorgan! But you are no longer in Hawkins... you are
-in the Demegorgan's home. So he finds you easily and kills you. However, you came really close to finding Will
-before your tragic death."))
-
-  (if (= location :updown)
-    (update-in player [:health] #(- % 100)))
-
-  (if (= location :bus)
-  (println "You duck down behind the seats inside the abandoned school bus. Overhead the helicopter stalls... but after a time it moves on.
-You've survived and kept Eleven safe!"))
- (if (= location :bus)
-(assoc-in player [:ducked] true))))
-
 
 
 (defn hide [player]
@@ -292,7 +283,90 @@ before your tragic death.")))
 ))
 
 
+; (defn battle [player]
+;
+;   (loop [location (player :location)]
+;
+;   (when (and (> (player :demhealth) 0) (> (player :health) 0))
+;   (let [ppl (status player)
+;         _  (println (str "What is your next attack?
+;     'swing bat' : 'throw rocks' : 'use eleven' \nDemegorgan Health: "(player :demhealth)))
+;         command (read-line)]
+;     (recur the-map (respond ppl (to-keywords command)))))
+;
+;     (println (str "The demagorgan strikes back! Taking away 10 health points... your remaining health: " (player :health)))
+;
+;     (update-in player [:health] #(- % 10))
+;
+;   )
+;
+;   (if (> (player :health) 0)
+;
+;   (println "*********** :) :) ! ! ! CONGRATULATIONS ! ! ! (: (: ***********
+; You have succesfully defeated the Demegorgan!! From a distance you see Will crawling towards you. You run to him,
+; pick him up, and swing him over your shoulder. With your party you leave the Upside Down and go home to celebrate!")
+;   (println "You died at the hands of the Demegorgan...")
+; )
+;
+; (update-in player [:health] #(- % 100))
+;
+; )
 
+
+(defn swingbat [player]
+
+(if (and (> (player :demhealth) 15) (and (contains? (player :party) :steve) (contains? (player :inventory) :bat)))
+  (println (str "Steve swings the nail covered bat at the demegorgan and knocks his health down 15! New demagorgan health: " (- (player :demhealth) 15)))
+  (if (< (player :demhealth) 16)
+  (println "The demegorgan is almost dead! Use your most powerful weapon to finish him off! But the demagorgan takes advantage
+of your distraction and knocks your health down 10!")
+  (println (str "You are either missing Steve from your party or you do not have the bat from the Byer's House... The demagorgan takes advantage
+of your distraction and knocks your health down 10! Your health: " (- (player :health) 10)))
+))
+
+(if (< (player :health) 1)
+  (println "Andddddddd you died."))
+
+(if (and (> (player :demhealth) 15) (and (contains? (player :party) :steve) (contains? (player :inventory) :bat)))
+(update-in player [:demhealth] #(- % 15))
+(update-in player [:health] #(- % 10))
+
+))
+
+(defn throrocks [player]
+
+  (if (> (player :demhealth) 15)
+    (println (str "Lucas and Dustin throw rocks at the Demegorgan and knock his health down 5! New demagorgan health: " (- (player :demhealth) 5)))
+    (println (str "The demegorgan is almost dead! Use your most powerful weapon to finish him off! The demagorgan takes advantage
+of your distraction and knocks your health down 10! Your health: " (- (player :health) 10)))
+  )
+
+  (if (< (player :health) 1)
+    (println "Andddddddd you died."))
+
+  (if (> (player :demhealth) 15)
+  (update-in player [:demhealth] #(- % 5))
+  (update-in player [:health] #(- % 10))
+
+))
+
+(defn useeleven [player]
+  (if (and (< (player :demhealth) 16) (contains? (player :party) :eleven))
+    (println "Eleven finishes off the demagorgan and he is vaporized!!
+\n*********** :) :) ! ! ! CONGRATULATIONS ! ! ! (: (: ***********
+You have succesfully defeated the Demegorgan!! From a distance you see Will crawling towards you. You run to him,
+pick him up, and swing him over your shoulder. With your party you leave the Upside Down and go home to celebrate!\n")
+    (println (str "Save up your most powerful weapon for when the demagorgan is almost dead! The demagorgan takes advantage
+of your distraction and knocks your health down 10! Your health: " (- (player :health) 10)))
+  )
+
+  (if (< (player :health) 1)
+    (println "Andddddddd you died."))
+
+  (if (and (< (player :demhealth) 16) (contains? (player :party) :eleven))
+  (update-in player [:demhealth] #(- % 100))
+  (update-in player [:health] #(- % 10))
+))
 
 (defn talk [person player]
   (if (= person :clarke)
@@ -314,12 +388,13 @@ Good luck!\n") player)
 
 (def adventurer
   {:location :updown
-   :inventory #{}
-   :party #{:Dustin, :Lucas}
+   :inventory #{:bat}
+   :party #{:Dustin, :Lucas, :steve, :eleven}
    :tick 0
    :health 100
    :eaten false
    :ducked false
+   :demhealth 100
    :seen #{}})
 
 (defn respond [player command]
@@ -334,6 +409,7 @@ Good luck!\n") player)
          [:downstairs] (go :downstairs player)
          [:leave] (go :leave player)
          [:stay] (go :stay player)
+         [:battle] (go :battle player)
          ;picking up objects and adding them to the player's inventory
          [:pickup :bike] (pickup :bike player)
          [:pickup :bat] (pickup :bat player)
@@ -356,6 +432,9 @@ Good luck!\n") player)
          [:fight] (fight player)
          [:jump] (jump :jump player)
          [:hide] (hide player)
+         [:swing :bat] (swingbat player)
+         [:throw :rocks] (throrocks player)
+         [:use :eleven] (useeleven player)
          ;talking functions
          [:talk :to :clarke] (talk :clarke player)
 
@@ -384,7 +463,7 @@ You can quit the game at any time by typing 'quit'. And lastly, *turn on your so
 
   (loop [local-map the-map
          local-player adventurer]
-   (when (> (local-player :health) 0) ;exit game when u die
+   (when (and (> (local-player :demhealth) 0) (> (local-player :health) 0)) ;exit game when u die
     (let [pl (status local-player)
           _  (println " What do you want to do?")
           command (read-line)]
