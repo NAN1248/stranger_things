@@ -120,22 +120,21 @@ Type 'talk to clarke' to talk to Mr. Clarke.\nType 'friend clarke' to add Mr. Cl
             :contents #{}}
 
   :lab {:desc "You get past the gate, and there it is: Hawkins National Labatory\n
-                Known for being associated with the 'energy department' this laboratory is suspicious and you can sense that something is near.\n
-                Almost as if you were standing on top of it...\n"
+Known for being associated with the 'energy department' this laboratory is suspicious and you can sense that something is near.\n
+Almost as if you were standing right on top of it...\n"
             :title "in the Lab"
-            :dir {:downstairs :updown,:north :station}
+            :dir {:downstairs :updown, :north :station}
             :people #{}
-            :help "Type 'north' to go to the police station.\nType 'downstairs' to explore the basement"
+            :help "Type 'north' to go to the police station."
             :contents #{}}
   ;
   ;
   ; note: have hide kill them "you were found and eaten alive"
   ; we should only have them be able to see the go home option after the demegorgon has died
   ;
-  :updown {:desc "The winds howl in the distance, and a chill goes down your spine. You cannot see Will, but you sense that he is here. You cry out Will's name...\n
-                  but you are met with silence.\n
-                  Suddenly out of the ground emerges the demogorgon.\n
-                  Your options are fight or hide.\n"
+  :updown {:desc "The winds howl in the distance, and a chill goes down your spine. Everything is dark and covered in black vines.
+You cannot see Will, but you sense that he is here. You cry out Will's name...but you are met with silence.\n
+Suddenly out of the ground emerges the demogorgon. Your options are fight or hide.\n"
             :title "in the Upside Down"
             :dir {:west :basement, :fight, :hide}
             :people #{:will}
@@ -256,9 +255,44 @@ the wall and bites your head off... and you die.") player))
         (go :jump player)))
 
 (defn hide [player]
+  (let [location (player :location)]
+
+  (if (= location :updown)
+    (println "You've attempted to hide from the demagorgan! But you are no longer in Hawkins... you are
+in the Demegorgan's home. So he finds you easily and kills you. However, you came really close to finding Will
+before your tragic death."))
+
+  (if (= location :updown)
+    (update-in player [:health] #(- % 100)))
+
+  (if (= location :bus)
+  (println "You duck down behind the seats inside the abandoned school bus. Overhead the helicopter stalls... but after a time it moves on.
+You've survived and kept Eleven safe!"))
+ (if (= location :bus)
+(assoc-in player [:ducked] true))))
+
+
+
+(defn hide [player]
+  (let [location (player :location)]
+
+  (if (= location :bus)
   (println "You duck down behind the seats inside the abandoned school bus. Overhead the helicopter stalls... but after a time it moves on.
 You've survived and kept Eleven safe!")
-(assoc-in player [:ducked] true))
+    (if (= location :updown)
+      (println "You've attempted to hide from the demagorgan! But you are no longer in Hawkins... you are
+in the Demegorgan's home. So he finds you easily and kills you. However, you came really close to finding Will
+before your tragic death.")))
+
+  (if (= location :bus)
+    (assoc-in player [:ducked] true)
+    (if (= location :updown)
+      (update-in player [:health] #(- % 100))))
+
+))
+
+
+
 
 (defn talk [person player]
   (if (= person :clarke)
@@ -279,7 +313,7 @@ Good luck!\n") player)
   (update-in player [:tick] inc))
 
 (def adventurer
-  {:location :school
+  {:location :updown
    :inventory #{}
    :party #{:Dustin, :Lucas}
    :tick 0
