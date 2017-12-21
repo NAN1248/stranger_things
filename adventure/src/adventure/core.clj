@@ -388,8 +388,8 @@ Good luck!\n") player)
 
 (def adventurer
   {:location :updown
-   :inventory #{:bat}
-   :party #{:Dustin, :Lucas, :steve, :eleven}
+   :inventory #{}
+   :party #{:Dustin, :Lucas}
    :tick 0
    :health 100
    :eaten false
