@@ -187,6 +187,9 @@ you find Steve Harrington fixing his hair. "
   (let [location (player :location)
         dest (->> the-map location :dir dir)]
 
+    (if (and (not (contains? (player :inventory) :key)) (= dest :updown))
+      (do (println "You seem to be missing the key to the Upside Down!! Perhaps you should go back and grab it...") player)
+
     (if (and (not (contains? (player :party) :hopper)) (= dest :lab))
       (do (println "Without Hopper, getting into the lab seems hopeless...") player)
 
@@ -210,7 +213,7 @@ super-powered friend you would be able to break in?") player)
           (if (nil? dest)
             (do (println "You can't go that way.")
                 player)
-            (assoc-in player [:location] dest))))))))))
+            (assoc-in player [:location] dest)))))))))))
 
 
 (defn pickup [contents player]
@@ -350,7 +353,8 @@ Oh your looking for will?...
 ...
 You think he's in another dimension?....
 ...
-Well I think you guys will find him! Just, if you feel any weird gravity waves you should try going 'downstairs'...
+Well I think you guys will find him! Just, if you feel any weird gravity waves or like you might be
+right on top of something, you should try going 'downstairs'...
 ...
 Good luck!\n") player)
     (if (= person :hopper)
@@ -368,8 +372,8 @@ Well if you think Will is in the Lab, I happen to know a secret way in.
   (update-in player [:tick] inc))
 
 (def adventurer
-  {:location :station
-   :inventory #{}
+  {:location :lab
+   :inventory #{:key}
    :party #{:Dustin, :Lucas}
    :tick 0
    :health 100
