@@ -5,8 +5,6 @@
 																				)
   (:gen-class))
 
-(use 'clj-audio.core) ; comment this out if sound doesn't work
-
 (def the-map
   {
   :basement {:desc "Welcome to the small town of Hawkins! You are Mike Wheeler and your friends are Dustin, Lucas, and Will.
@@ -280,7 +278,7 @@ the wall and bites your head off... and you die.") player))
   "I don't do a whole lot ... yet."
   [& args]
 
-	(loop-clip (clip (->stream "./stmt.wav"))) ; comment this count if sound doesn't work
+	(audio/loop-clip (audio/clip (audio/->stream "./stmt.wav"))) ; comment this count if sound doesn't work
 
   (loop [local-map the-map
          local-player adventurer]
