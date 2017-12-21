@@ -38,7 +38,7 @@ recognize the song 'Should I Stay or Should I Go'..."
             :dir {:leave :mirkwood, :stay :stayhouse}
             :people #{}
             :help "Type 'leave' to go back to Mirkwood.\nType 'stay' to investigate and risk encountering whoever is playing the music."
-            :contents #{}}
+            :contents #{:bat}}
 
   :stayhouse {:desc "You head down the hallway to check out Will's room only to look to your right and see the demogorgan
 stretching the wallpaper out in an attempt to break through the wall! At the same time a bat with nails sticking out of it
@@ -47,8 +47,8 @@ catches your eye. "
              :dir {:leave :mirkwood}
              :people #{}
              :help "Type 'pickup bat' to grab the weapon.\nThen you must decide to run or fight the demogorgan!
-(Be careful... you might not be prepared for an unexpected battle...)\nType 'fight' to try to defeat the demogorgan.\nType 'leave' to flee Will's house."}
-            :contents #{:bat}
+(Be careful... you might not be prepared for an unexpected battle...)\nType 'fight' to try to defeat the demogorgan.\nType 'leave' to flee Will's house."
+            :contents #{:bat}}
 
   :store {:desc "Eleven breaks the glass in the double doors with her mind and you step inside! Eleven complains that
 she is hungry after escaping the D.O.E. Perhaps you should get her some food..."
@@ -372,8 +372,8 @@ Well if you think Will is in the Lab, I happen to know a secret way in.
   (update-in player [:tick] inc))
 
 (def adventurer
-  {:location :lab
-   :inventory #{:key}
+  {:location :house
+   :inventory #{}
    :party #{:Dustin, :Lucas}
    :tick 0
    :health 100
