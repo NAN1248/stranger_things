@@ -110,12 +110,13 @@ You've survived and kept Eleven safe!"
   ;
   ;
   :school {:desc "You have arrived at Hawkins Middle School. This establishment is where you study everyday - specifically in the AV club room.
-                  You roam the halls looking for your AV Club teacher because you think he will have a good idea as to what to do about Will being stuck in another dimension.
-                  Down the hallway, you see him."
+You roam the halls looking for your AV Club teacher because you think he will have a good idea as to what to do about Will being stuck in another dimension.
+You see him standing at the end of the hall."
             :title "at Hawkins Middle School"
             :dir {:east :bus, :west :basement, :south :station}
             :people #{:mr_clarke}
-            :help "Type 'east' to go to the bus.\nType 'west' to go back to your basement.\nType 'south' to go to the police station."
+            :help "Type 'east' to go to the bus.\nType 'west' to go back to your basement.\nType 'south' to go to the police station.
+Type 'talk to clarke' to talk to Mr. Clarke.\nType 'friend clarke' to add Mr. Clarke to your party."
             :contents #{}}
 
   :lab {:desc "You get past the gate, and there it is: Hawkins National Labatory\n
@@ -211,9 +212,11 @@ super-powered friend you would be able to break in?") player)
 (defn addparty [people player]
   (let [location (player :location)
               person (->> the-map location :people people)]
+    (if (= people :clarke)
+      (do (println "Sorry kids I cannot come with you. I have classes to teach!") player)
     (if (nil? person)
       (do (println "There's no one here.") player)
-      (update-in player [:party] #(conj % person)))))
+      (update-in player [:party] #(conj % person))))))
 
 (defn eat [food player]
   (if (and (contains? (player :inventory) :eggo_waffles) (= food :eggo_waffles))
@@ -257,11 +260,26 @@ the wall and bites your head off... and you die.") player))
 You've survived and kept Eleven safe!")
 (assoc-in player [:ducked] true))
 
+(defn talk [person player]
+  (if (= person :clarke)
+    (do (println "Oh hey kids what's going on?...
+...
+Oh your looking for will?...
+...
+You think he's in another dimension?....
+...
+Well I think you guys will find him! Just, if you feel any weird gravity waves you should try going 'downstairs'...
+...
+Good luck!\n") player)
+    (if (= person :hopper)
+      (do (println "") player))
+))
+
 (defn tock [player]
   (update-in player [:tick] inc))
 
 (def adventurer
-  {:location :basement
+  {:location :school
    :inventory #{}
    :party #{:Dustin, :Lucas}
    :tick 0
@@ -292,6 +310,7 @@ You've survived and kept Eleven safe!")
          ;adding people found in the game to your current party
          [:friend :eleven] (addparty :eleven player)
          [:friend :steve] (addparty :steve player)
+         [:friend :clarke] (addparty :clarke player)
          ;eating functionality given to eleven
          [:eat :pizza] (eat :frozen_pizza player)
          [:eat :eggo] (eat :eggo_waffles player)
@@ -303,6 +322,8 @@ You've survived and kept Eleven safe!")
          [:fight] (fight player)
          [:jump] (jump :jump player)
          [:hide] (hide player)
+         ;talking functions
+         [:talk :to :clarke] (talk :clarke player)
 
          _ (do (println "I don't understand you.")
                player)))
@@ -322,7 +343,7 @@ You've survived and kept Eleven safe!")
   (println "Welcome to the small town of Hawkins! You are Mike Wheeler and your friends are Dustin, Lucas, and Will.
 Dustin and Lucas are currently in your party, but Will has been captured by the demogorgan. You must
 save him before it's too late! Type 'help' to see what you are able to do while you explore Hawkins.
-You can quit the game at any time by typing 'quit'.")
+You can quit the game at any time by typing 'quit'. And lastly, *turn on your sound* there is music playing!")
   (println)
 
 	(audio/loop-clip (audio/clip (audio/->stream "./stmt.wav"))) ; comment this count if sound doesn't work
