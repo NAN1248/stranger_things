@@ -98,11 +98,12 @@ You've survived and kept Eleven safe!"
             :contents #{}}
 
   :station {:desc "You arrive at the Police Station. In a chair you see a middle aged man who is complacent and curious, smoking his cigarrette and drinking a cold beer.
-                    You can tell he has seen a lot in his time, and think he can help you out on your journey to find Will. His name is Hopper, and he is the chief of this town."
+You can tell he has seen a lot in his time, and think he can help you out on your journey to find Will. His name is Hopper, and he is the chief of this town."
             :title "at the Police Station"
             :dir {:east :bus, :north :school, :south :lab}
             :people #{:hopper}
-            :help "Type 'east' to go to the bus.\nType 'north' to go the school.\nType 'south' to go to the lab."
+            :help "Type 'east' to go to the bus.\nType 'north' to go the school.\nType 'south' to go to the lab.\nType 'talk to hopper' to talk to Chief Hopper.
+Type 'friend hopper' to add him to your party."
             :contents #{}}
   ;
   ;
@@ -119,8 +120,8 @@ You see him standing at the end of the hall."
 Type 'talk to clarke' to talk to Mr. Clarke.\nType 'friend clarke' to add Mr. Clarke to your party."
             :contents #{}}
 
-  :lab {:desc "You get past the gate, and there it is: Hawkins National Labatory\n
-Known for being associated with the 'energy department' this laboratory is suspicious and you can sense that something is near.\n
+  :lab {:desc "You get past the gate, and there it is: Hawkins National Labatory
+Known for being associated with the 'energy department' this laboratory is suspicious and you can sense that something is near.
 Almost as if you were standing right on top of it...\n"
             :title "in the Lab"
             :dir {:downstairs :updown, :north :station}
@@ -133,7 +134,7 @@ Almost as if you were standing right on top of it...\n"
   ; we should only have them be able to see the go home option after the demegorgon has died
   ;
   :updown {:desc "The winds howl in the distance, and a chill goes down your spine. Everything is dark and covered in black vines.
-You cannot see Will, but you sense that he is here. You cry out Will's name...but you are met with silence.\n
+You cannot see Will, but you sense that he is here. You cry out Will's name...but you are met with silence.
 Suddenly out of the ground emerges the demogorgon. Your options are battle or hide.\n"
             :title "in the Upside Down"
             :dir {:battle :updownbattle, :west :basement, :fight, :hide}
@@ -151,7 +152,7 @@ These are the available attacks: 'swing bat' : 'throw rocks' : 'use eleven'"
 
 
   :bedroom {:desc "The room is covered in striped wallpaper and pictures of Nancy's friends. On top of Nancy's bed
-                    you find Steve Harrington fixing his hair. "
+you find Steve Harrington fixing his hair. "
             :title "in Nancy's Bedroom"
             :dir {:downstairs :basement, :south :mirkwood}
             :people #{:steve}
@@ -186,6 +187,9 @@ These are the available attacks: 'swing bat' : 'throw rocks' : 'use eleven'"
   (let [location (player :location)
         dest (->> the-map location :dir dir)]
 
+    (if (and (not (contains? (player :party) :hopper)) (= dest :lab))
+      (do (println "Without Hopper, getting into the lab seems hopeless...") player)
+
     (if (and (contains? (player :party) :eleven) (and (not (= dest :store)) (and (= location :forest) (not (player :eaten)))))
       (do (println "Eleven is really hungry! She won't let you leave until you feed her.") player)
 
@@ -206,7 +210,7 @@ super-powered friend you would be able to break in?") player)
           (if (nil? dest)
             (do (println "You can't go that way.")
                 player)
-            (assoc-in player [:location] dest)))))))))
+            (assoc-in player [:location] dest))))))))))
 
 
 (defn pickup [contents player]
@@ -283,36 +287,6 @@ before your tragic death.")))
 ))
 
 
-; (defn battle [player]
-;
-;   (loop [location (player :location)]
-;
-;   (when (and (> (player :demhealth) 0) (> (player :health) 0))
-;   (let [ppl (status player)
-;         _  (println (str "What is your next attack?
-;     'swing bat' : 'throw rocks' : 'use eleven' \nDemegorgan Health: "(player :demhealth)))
-;         command (read-line)]
-;     (recur the-map (respond ppl (to-keywords command)))))
-;
-;     (println (str "The demagorgan strikes back! Taking away 10 health points... your remaining health: " (player :health)))
-;
-;     (update-in player [:health] #(- % 10))
-;
-;   )
-;
-;   (if (> (player :health) 0)
-;
-;   (println "*********** :) :) ! ! ! CONGRATULATIONS ! ! ! (: (: ***********
-; You have succesfully defeated the Demegorgan!! From a distance you see Will crawling towards you. You run to him,
-; pick him up, and swing him over your shoulder. With your party you leave the Upside Down and go home to celebrate!")
-;   (println "You died at the hands of the Demegorgan...")
-; )
-;
-; (update-in player [:health] #(- % 100))
-;
-; )
-
-
 (defn swingbat [player]
 
 (if (and (> (player :demhealth) 15) (and (contains? (player :party) :steve) (contains? (player :inventory) :bat)))
@@ -380,14 +354,21 @@ Well I think you guys will find him! Just, if you feel any weird gravity waves y
 ...
 Good luck!\n") player)
     (if (= person :hopper)
-      (do (println "") player))
+      (do (println "Hey kids, you got a problem?
+...
+Uh huh, so you say he's missing?
+...
+Those government agents keep ruining things around here.
+...
+Well if you think Will is in the Lab, I happen to know a secret way in.
+...") player))
 ))
 
 (defn tock [player]
   (update-in player [:tick] inc))
 
 (def adventurer
-  {:location :updown
+  {:location :station
    :inventory #{}
    :party #{:Dustin, :Lucas}
    :tick 0
@@ -421,6 +402,7 @@ Good luck!\n") player)
          [:friend :eleven] (addparty :eleven player)
          [:friend :steve] (addparty :steve player)
          [:friend :clarke] (addparty :clarke player)
+         [:friend :hopper] (addparty :hopper player)
          ;eating functionality given to eleven
          [:eat :pizza] (eat :frozen_pizza player)
          [:eat :eggo] (eat :eggo_waffles player)
@@ -437,6 +419,7 @@ Good luck!\n") player)
          [:use :eleven] (useeleven player)
          ;talking functions
          [:talk :to :clarke] (talk :clarke player)
+         [:talk :to :hopper] (talk :hopper player)
 
          _ (do (println "I don't understand you.")
                player)))
