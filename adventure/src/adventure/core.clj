@@ -1,12 +1,11 @@
 (ns adventure.core
   (:require [clojure.core.match :refer [match]]
             [clojure.string :as str]
-						[clj-audio.core :as audio])
+						[clj-audio.core :as audio] ; comment this count if sound doesn't work
+																				)
   (:gen-class))
 
-(use 'clj-audio.core)
-
-(audio/loop-clip (clip (->stream "./stmt.wav")))
+(use 'clj-audio.core) ; comment this out if sound doesn't work
 
 (def the-map
   {
@@ -20,8 +19,7 @@
             :help "Type 'south' to go to Mirkwood. \nType 'upstairs' to go to Nancy's bedroom."
             :contents #{}}
 
-  :mirkwood {:desc "Mirkwood is a road that runs past the nearby forest. You see Will's bike lying on the side of the
-                    road, abandoned."
+  :mirkwood {:desc "Mirkwood is a road that runs past the nearby forest. You see Will's bike lying on the side of the road, abandoned."
             :title "on Mirkwood"
             :dir {:north :basement, :east :forest, :west :house}
             :people #{}
@@ -281,10 +279,14 @@ the wall and bites your head off... and you die.") player))
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
+
+	(loop-clip (clip (->stream "./stmt.wav"))) ; comment this count if sound doesn't work
+
   (loop [local-map the-map
          local-player adventurer]
    (when (> (local-player :health) 0) ;exit game when u die
     (let [pl (status local-player)
           _  (println " What do you want to do?")
           command (read-line)]
-      (recur local-map (respond pl (to-keywords command)))))))
+      (recur local-map (respond pl (to-keywords command))))))
+	(System/exit 0)) ; hard exit nessecary to stop the sound here!
