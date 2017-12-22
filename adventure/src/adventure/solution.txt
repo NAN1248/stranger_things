@@ -1,0 +1,35 @@
+upstairs
+friend steve
+south
+pickup bike
+west
+stay
+pickup bat
+leave
+east
+friend eleven
+south
+grab eggo
+eat eggo
+north
+east
+jump
+pickup key
+north
+hide
+west
+talk to hopper
+friend hopper
+north
+talk to clarke
+south
+south
+downstairs
+battle
+swing bat
+swing bat
+swing bat
+swing bat
+swing bat
+swing bat
+use eleven
