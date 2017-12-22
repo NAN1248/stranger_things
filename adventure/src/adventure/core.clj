@@ -15,16 +15,16 @@
             :help "Type 'south' to go to Mirkwood. \nType 'upstairs' to go to Nancy's bedroom."
             :contents #{}}
 
-  :mirkwood {:desc "Mirkwood is a road that runs past the nearby forest. You see Will's bike lying on the side of the road, abandoned."
+  :mirkwood {:desc "Mirkwood is a road that runs past the nearby forest.\nYou see Will's bike lying on the side of the road, abandoned."
             :title "on Mirkwood"
             :dir {:north :basement, :east :forest, :west :house}
             :people #{}
             :help "Type 'north' to go back to your basement. \nType 'east' to go to the forest. \nType 'west' to go to the Byer's House.\nType 'pickup bike' to grab Will's bike."
             :contents #{:bike}}
 
-  :forest {:desc "The forest is a dangerous place at night. You, Dustin, and Lucas travel through the forest in
-hopes of finding Will. It begins to storm and Lucas is getting nervous. You turn your flashlight towards a noise
-you hear in the bushes... You've found Eleven!"
+  :forest {:desc "The forest is a dangerous place at night.\nYou, Dustin, and Lucas travel through the forest in
+hopes of finding Will.\nIt begins to storm and Lucas is getting nervous.\nYou turn your flashlight towards a noise
+you hear in the bushes...\nYou've found Eleven!"
             :title "in the forest"
             :dir {:west :mirkwood, :south :store, :east :cliff}
             :people #{:eleven}
@@ -32,7 +32,7 @@ you hear in the bushes... You've found Eleven!"
                     Type 'south' to go to the local Hawkins' grocery store.\nType 'east' to head towards the cliff overlooking the lake."
             :contents #{}}
 
-  :house {:desc "The Byer's House is dark and empty. You hear sounds coming from Will's room. The lights start to flicker, and you
+  :house {:desc "The Byer's House is dark and empty.\nYou hear sounds coming from Will's room.\nThe lights start to flicker, and you
 recognize the song 'Should I Stay or Should I Go'..."
             :title "in the Byer's House"
             :dir {:leave :mirkwood, :stay :stayhouse}
@@ -51,7 +51,7 @@ catches your eye. "
             :contents #{:bat}}
 
   :store {:desc "Eleven breaks the glass in the double doors with her mind and you step inside! Eleven complains that
-she is hungry after escaping the D.O.E. Perhaps you should get her some food..."
+she is hungry after escaping the D.O.E.\nPerhaps you should get her some food..."
             :title "at the grocery store"
             :dir {:north :forest}
             :people #{}
@@ -60,8 +60,8 @@ Type 'grab eggo' or 'grab pizza' to grab either the eggo waffles or the frozen p
 Type 'eat eggo' or 'eat pizza' to have Eleven fuel up on some food :)"
             :contents #{:eggo_waffles, :frozen_pizza}}
 
-  :cliff {:desc "You look around at how beautiful it is here on the edge of the cliff overlooking the lake. Over
-the edge of the cliff you see what seems to be a silver key sitting on a ledge a few feet below you... Oh no!
+  :cliff {:desc "You look around at how beautiful it is here on the edge of the cliff overlooking the lake.\nOver
+the edge of the cliff you see what seems to be a silver key sitting on a ledge a few feet below you...\nOh no!
 You don't know how, but the bullies from school have found you here! They start to run towards you..."
             :title "at the Cliff"
             :dir {:west :forest, :jump :jumped}
@@ -76,20 +76,16 @@ death! She has you suspended in the air, in arms reach of the key you saw earlie
             :people #{}
             :help "Type 'west' to go to the forest.\nType 'north' to go to the school bus.\nType 'grab key' to grab the key from the cliff's ledge."
             :contents #{:key}}
-  ;
-  ;
-  ; note: hide and fight must be implemented
-  ; fight should kill them "You dont stand a chance against the helicopter"
-  ;
-  :bus {:desc "You arrive at the abandoned school bus. In the distance you can hear a helicopter whirring. You know exactly who it is.
-They want to take Eleven back to the lab. Will you hide and hope they pass by or fight and risk losing Eleven and your lives?"
+
+  :bus {:desc "You arrive at the abandoned school bus.\nIn the distance you can hear a helicopter whirring.\nYou know exactly who it is.
+They want to take Eleven back to the lab.\nWill you hide and hope they pass by or fight and risk losing Eleven and your lives?"
             :title "at the abandoned school bus"
             :dir {:south :cliff, :west :station}
             :people #{}
             :help "Type 'south' to go to the cliff.\nType 'west' to go to the police station.\nType 'hide' to take evasive action.\nType 'fight' to take on the helicopter."
             :contents #{}}
 
-  :survivedbus {:desc "You duck down behind the seats inside the abandoned school bus. Overhead the helicopter stalls... but after a time it moves on.
+  :survivedbus {:desc "You duck down behind the seats inside the abandoned school bus.\nOverhead the helicopter stalls...\nbut after a time it moves on.
 You've survived and kept Eleven safe!"
             :title "at the abandoned school bus"
             :dir {:south :cliff, :west :station}
@@ -97,20 +93,16 @@ You've survived and kept Eleven safe!"
             :help "Type 'south' to go to the cliff.\nType 'west' to go to the police station."
             :contents #{}}
 
-  :station {:desc "You arrive at the Police Station. In a chair you see a middle aged man who is complacent and curious, smoking his cigarrette and drinking a cold beer.
-You can tell he has seen a lot in his time, and think he can help you out on your journey to find Will. His name is Hopper, and he is the chief of this town."
+  :station {:desc "You arrive at the Police Station.\nIn a chair you see a middle aged man who is complacent and curious, smoking his cigarrette and drinking a cold beer.
+You can tell he has seen a lot in his time, and think he can help you out on your journey to find Will.\nHis name is Hopper, and he is the chief of this town."
             :title "at the Police Station"
             :dir {:east :bus, :north :school, :south :lab}
             :people #{:hopper}
             :help "Type 'east' to go to the bus.\nType 'north' to go the school.\nType 'south' to go to the lab.\nType 'talk to hopper' to talk to Chief Hopper.
 Type 'friend hopper' to add him to your party."
             :contents #{}}
-  ;
-  ;
-  ; note: the school no longer connects to the lab
-  ;
-  ;
-  :school {:desc "You have arrived at Hawkins Middle School. This establishment is where you study everyday - specifically in the AV club room.
+
+  :school {:desc "You have arrived at Hawkins Middle School.\nThis establishment is where you study everyday - specifically in the AV club room.
 You roam the halls looking for your AV Club teacher because you think he will have a good idea as to what to do about Will being stuck in another dimension.
 You see him standing at the end of the hall."
             :title "at Hawkins Middle School"
@@ -121,37 +113,32 @@ Type 'talk to clarke' to talk to Mr. Clarke.\nType 'friend clarke' to add Mr. Cl
             :contents #{}}
 
   :lab {:desc "You get past the gate, and there it is: Hawkins National Labatory
-Known for being associated with the 'energy department' this laboratory is suspicious and you can sense that something is near.
-Almost as if you were standing right on top of it...\n"
+Known for being associated with the 'energy department' \nThis laboratory is suspicious and you feel that everything has become heavier"
             :title "in the Lab"
             :dir {:downstairs :updown, :north :station}
             :people #{}
             :help "Type 'north' to go to the police station."
             :contents #{}}
-  ;
-  ;
-  ; note: have hide kill them "you were found and eaten alive"
-  ; we should only have them be able to see the go home option after the demegorgon has died
-  ;
-  :updown {:desc "The winds howl in the distance, and a chill goes down your spine. Everything is dark and covered in black vines.
-You cannot see Will, but you sense that he is here. You cry out Will's name...but you are met with silence.
-Suddenly out of the ground emerges the demogorgon. Your options are battle or hide.\n"
+
+  :updown {:desc "The winds howl in the distance, and a chill goes down your spine.\nEverything is dark and covered in black vines.
+You cannot see Will, but you sense that he is here.\nYou cry out Will's name...but you are met with silence.
+Suddenly out of the ground emerges the demogorgon.\nYour options are battle or hide."
             :title "in the Upside Down"
             :dir {:battle :updownbattle, :west :basement, :fight, :hide}
             :people #{:will}
             :help "Type 'battle' to fight the demegorgon.\nType 'hide' to attempt to hide from the demegorgon."
             :contents #{}}
 
-  :updownbattle {:desc "You have chosen to battle the demegorgan... good luck! These are the available attacks: 'swing bat' : 'throw rocks' : 'use eleven'"
+  :updownbattle {:desc "You have chosen to battle the demegorgan...\ngood luck! \nThese are the available attacks: 'swing bat' : 'throw rocks' : 'use eleven'"
             :title "in the Upside Down"
             :dir {}
             :people #{:will}
-            :help "You're in the Upside Down... no one can help you anymore...
+            :help "You're in the Upside Down...\nno one can help you anymore...\n
 These are the available attacks: 'swing bat' : 'throw rocks' : 'use eleven'"
             :contents #{}}
 
 
-  :bedroom {:desc "The room is covered in striped wallpaper and pictures of Nancy's friends. On top of Nancy's bed
+  :bedroom {:desc "The room is covered in striped wallpaper and pictures of Nancy's friends.\nOn top of Nancy's bed
 you find Steve Harrington fixing his hair. "
             :title "in Nancy's Bedroom"
             :dir {:downstairs :basement, :south :mirkwood}
@@ -210,10 +197,16 @@ super-powered friend you would be able to break in?") player)
         (if (and (= location :store) (not (player :eaten)))
           (do (println "Eleven is really hungry! She won't let you leave until you feed her.") player)
 
-          (if (nil? dest)
+        (if (nil? dest)
             (do (println "You can't go that way.")
                 player)
-            (assoc-in player [:location] dest)))))))))))
+
+            (if (= dest :bus)
+              (and (future (audio/play (audio/->stream "./hsfx.wav"))) (assoc-in player [:location] dest))
+            (if (= dest :house)
+              (and (future (audio/play (audio/->stream "./sis.wav"))) (assoc-in player [:location] dest))
+              (assoc-in player [:location] dest)))))))))))))
+
 
 
 (defn pickup [contents player]
@@ -372,7 +365,7 @@ Well if you think Will is in the Lab, I happen to know a secret way in.
   (update-in player [:tick] inc))
 
 (def adventurer
-  {:location :house
+  {:location :basement
    :inventory #{}
    :party #{:Dustin, :Lucas}
    :tick 0
@@ -385,6 +378,7 @@ Well if you think Will is in the Lab, I happen to know a secret way in.
 (defn respond [player command]
   (match command
          [:look] (update-in player [:seen] #(disj % (-> player :location)))
+
          ;directional movements
          [:north]  (go :north player)
          [:south] (go :south player)
@@ -395,6 +389,7 @@ Well if you think Will is in the Lab, I happen to know a secret way in.
          [:leave] (go :leave player)
          [:stay] (go :stay player)
          [:battle] (go :battle player)
+
          ;picking up objects and adding them to the player's inventory
          [:pickup :bike] (pickup :bike player)
          [:pickup :bat] (pickup :bat player)
@@ -402,18 +397,22 @@ Well if you think Will is in the Lab, I happen to know a secret way in.
          [:grab :eggo] (pickup :eggo_waffles player)
          [:grab :pizza] (pickup :frozen_pizza player)
          [:grab :key] (pickup :key player)
+
          ;adding people found in the game to your current party
          [:friend :eleven] (addparty :eleven player)
          [:friend :steve] (addparty :steve player)
          [:friend :clarke] (addparty :clarke player)
          [:friend :hopper] (addparty :hopper player)
+
          ;eating functionality given to eleven
          [:eat :pizza] (eat :frozen_pizza player)
          [:eat :eggo] (eat :eggo_waffles player)
+
          ;commands that give the player information or whole game commands
          [:status] (up player)
          [:help] (help player)
          [:quit] (update-in player [:health] #(- % 100))
+
          ;battle commands
          [:fight] (fight player)
          [:jump] (jump :jump player)
@@ -421,6 +420,7 @@ Well if you think Will is in the Lab, I happen to know a secret way in.
          [:swing :bat] (swingbat player)
          [:throw :rocks] (throrocks player)
          [:use :eleven] (useeleven player)
+
          ;talking functions
          [:talk :to :clarke] (talk :clarke player)
          [:talk :to :hopper] (talk :hopper player)
@@ -429,9 +429,9 @@ Well if you think Will is in the Lab, I happen to know a secret way in.
                player)))
 
 (defn -main
-  "I don't do a whole lot ... yet."
   [& args]
-
+  ; clears screen taken from http://visibletrap.blogspot.com/2015/09/how-to-clear-terminal-screen-in-clojure.html
+  (print (str (char 27) "[2J"))
   (println)
   (println "********************************************************************")
   (println "************************** STRANGER THINGS *************************")
@@ -452,7 +452,7 @@ You can quit the game at any time by typing 'quit'. And lastly, *turn on your so
          local-player adventurer]
    (when (and (> (local-player :demhealth) 0) (> (local-player :health) 0)) ;exit game when u die
     (let [pl (status local-player)
-          _  (println " What do you want to do?")
+          _  (println "\nWhat do you want to do?")
           command (read-line)]
       (recur local-map (respond pl (to-keywords command))))))
   (println)
