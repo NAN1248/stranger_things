@@ -157,7 +157,7 @@ you find Steve Harrington fixing his hair. "
             :dir {:downstairs :basement, :south :mirkwood}
             :people #{:steve}
             :help "Type 'downstairs' to go to basement. \nType 'south' to go to Mirkwood.
-                    Type 'friend steve' to add Steve to your party."
+Type 'friend steve' to add Steve to your party."
             :contents #{}}})
 
 (defn status [player]
