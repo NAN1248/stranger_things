@@ -61,7 +61,7 @@ Type 'eat eggo' or 'eat pizza' to have Eleven fuel up on some food :)"
             :contents #{:eggo_waffles, :frozen_pizza}}
 
   :cliff {:desc "You look around at how beautiful it is here on the edge of the cliff overlooking the lake.\nOver
-the edge of the cliff you see what seems to be a silver key sitting on a ledge a few feet below you...\nOh no!
+the edge of the cliff you see what seems to be a golden key sitting on a ledge a few feet below you...\nOh no!
 You don't know how, but the bullies from school have found you here! They start to run towards you..."
             :title "at the Cliff"
             :dir {:west :forest, :jump :jumped}
@@ -70,7 +70,7 @@ You don't know how, but the bullies from school have found you here! They start 
             :contents #{}}
 
   :jumped {:desc "You jumped off the cliff! But Eleven used her mind powers to prevent you from falling to your
-death! She has you suspended in the air, in arms reach of the key you saw earlier..."
+death! She has you suspended in the air, in arms reach of the golden key you saw earlier..."
             :title "at the Cliff"
             :dir {:west :forest, :north :bus}
             :people #{}
@@ -112,7 +112,7 @@ You see him standing at the end of the hall."
 Type 'talk to clarke' to talk to Mr. Clarke.\nType 'friend clarke' to add Mr. Clarke to your party."
             :contents #{}}
 
-  :lab {:desc "You get past the gate, and there it is: Hawkins National Labatory
+  :lab {:desc "Hopper breaks your team through the gate, and there it is: Hawkins National Labatory
 Known for being associated with the 'energy department' \nThis laboratory is suspicious and you feel that everything has become heavier"
             :title "in the Lab"
             :dir {:downstairs :updown, :north :station}
@@ -120,7 +120,7 @@ Known for being associated with the 'energy department' \nThis laboratory is sus
             :help "Type 'north' to go to the police station."
             :contents #{}}
 
-  :updown {:desc "The winds howl in the distance, and a chill goes down your spine.\nEverything is dark and covered in black vines.
+  :updown {:desc "You find the door to the stairwell but its locked.\nYou use the golden key to unlokc the door and head downstairs.\n\nThe winds howl in the distance, and a chill goes down your spine.\nEverything is dark and covered in black vines.
 You cannot see Will, but you sense that he is here.\nYou cry out Will's name...but you are met with silence.
 Suddenly out of the ground emerges the demogorgon.\nYour options are battle or hide."
             :title "in the Upside Down"
@@ -144,7 +144,7 @@ you find Steve Harrington fixing his hair. "
             :dir {:downstairs :basement, :south :mirkwood}
             :people #{:steve}
             :help "Type 'downstairs' to go to basement. \nType 'south' to go to Mirkwood.
-Type 'friend steve' to add Steve to your party."
+                    Type 'friend steve' to add Steve to your party."
             :contents #{}}})
 
 (defn status [player]
@@ -175,7 +175,7 @@ Type 'friend steve' to add Steve to your party."
         dest (->> the-map location :dir dir)]
 
     (if (and (not (contains? (player :inventory) :key)) (= dest :updown))
-      (do (println "You seem to be missing the key to the Upside Down!! Perhaps you should go back and grab it...") player)
+      (do (println "You seem to be missing the golden key!! Perhaps you should go back and grab it...") player)
 
     (if (and (not (contains? (player :party) :hopper)) (= dest :lab))
       (do (println "Without Hopper, getting into the lab seems hopeless...") player)
@@ -341,14 +341,16 @@ of your distraction and knocks your health down 10! Your health: " (- (player :h
 
 (defn talk [person player]
   (if (= person :clarke)
-    (do (println "Oh hey kids what's going on?...
+    (do (println "Oh hey kids what's going on?
 ...
-Oh your looking for will?...
+Oh your looking for will?
 ...
-You think he's in another dimension?....
+You think he's in another dimension?
 ...
 Well I think you guys will find him! Just, if you feel any weird gravity waves or like you might be
-right on top of something, you should try going 'downstairs'...
+right on top of something, you should try going 'downstairs'
+...
+You will need the golden key to get down there
 ...
 Good luck!\n") player)
     (if (= person :hopper)
@@ -444,6 +446,7 @@ Well if you think Will is in the Lab, I happen to know a secret way in.
   (println "Welcome to the small town of Hawkins! You are Mike Wheeler and your friends are Dustin, Lucas, and Will.
 Dustin and Lucas are currently in your party, but Will has been captured by the demogorgan. You must
 save him before it's too late! Type 'help' to see what you are able to do while you explore Hawkins.
+Type 'status' to see your player stats. Type 'look' to get the long room description.
 You can quit the game at any time by typing 'quit'. And lastly, *turn on your sound* there is music playing!")
   (println)
 
