@@ -226,16 +226,15 @@ super-powered friend you would be able to break in?") player)
       (update-in player [:party] #(conj % person))))))
 
 (defn eat [food player]
-
-  (if (and (contains? (player :inventory) :eggo_waffles) (= food :eggo_waffles))
-    (assoc-in player [:eaten] true))
-
   (if (and (contains? (player :inventory) :eggo_waffles) (= food :eggo_waffles))
       (do (println "'Yum' -eleven") player)
       (if (and (contains? (player :inventory) :frozen_pizza) (= food :frozen_pizza))
           (do (println "Uh-oh it looks like eleven doesn't like frozen pizza very much...") player)
           (do (println "Hmmm it doesn't look like you've grabbed any food for her yet.") player)))
-)
+
+  (if (and (contains? (player :inventory) :eggo_waffles) (= food :eggo_waffles))
+    (assoc-in player [:eaten] true)
+    (do (print "") player)))
 
 (defn help [player]
   (let [location (player :location)]
